@@ -2,7 +2,6 @@ package javafxmvc.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -10,22 +9,32 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafxmvc.model.domain.Usuario;
+import javafxmvc.model.domain.Autor;
 
-public class FXMLAnchorPaneCadastrosUsuarioDialogController implements Initializable {
+public class FXMLAnchorPaneCadastrosAutoresDialogController implements Initializable {
 
+	@FXML
+	private Label labelAutorCodigo;   
+	@FXML
+	private Label labelAutorNome;
+	@FXML
+	private Label labelAutorEndereco;    
+	@FXML
+	private Label labelAutorTelefone;
+	@FXML
+	private Label labelAutorStatus;
+	@FXML
+	private Label labelAutorTipo;
     @FXML
-    private Label labelUsuarioNome;
+    private TextField textFieldAutorNome;
     @FXML
-    private Label labelUsuarioEndereco;
+    private TextField textFieldAutorEndereco;
     @FXML
-    private Label labelUsuarioTelefone;
+    private TextField textFieldAutorTelefone;
     @FXML
-    private TextField textFieldUsuarioNome;
+    private TextField textFieldAutorStatus;
     @FXML
-    private TextField textFieldUsuarioEndereco;
-    @FXML
-    private TextField textFieldUsuarioTelefone;
+    private TextField textFieldAutorTipo;
     @FXML
     private Button buttonConfirmar;
     @FXML
@@ -33,7 +42,7 @@ public class FXMLAnchorPaneCadastrosUsuarioDialogController implements Initializ
 
     private Stage dialogStage;
     private boolean buttonConfirmarClicked = false;
-    private Usuario usuario;
+    private Autor autor;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -48,15 +57,15 @@ public class FXMLAnchorPaneCadastrosUsuarioDialogController implements Initializ
         this.dialogStage = dialogStage;
     }
 
-    public Usuario getUsuario() {
-        return this.usuario;
+    public Autor getAutor() {
+        return this.autor;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        this.textFieldUsuarioNome.setText(usuario.getNome());
-        this.textFieldUsuarioEndereco.setText(usuario.getEndereco());
-        this.textFieldUsuarioTelefone.setText(usuario.getTelefone());
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+        this.textFieldAutorNome.setText(autor.getNome());
+        this.textFieldAutorTelefone.setText(autor.getTelefone());
+        this.textFieldAutorStatus.setText(autor.getStatus());
     }
 
     public boolean isButtonConfirmarClicked() {
@@ -66,9 +75,9 @@ public class FXMLAnchorPaneCadastrosUsuarioDialogController implements Initializ
     @FXML
     public void handleButtonConfirmar() {
         if (validarEntradaDeDados()) {
-            usuario.setNome(textFieldUsuarioNome.getText());
-            usuario.setEndereco(textFieldUsuarioEndereco.getText());
-            usuario.setTelefone(textFieldUsuarioTelefone.getText());
+            autor.setNome(textFieldAutorNome.getText());
+            autor.setTelefone(textFieldAutorTelefone.getText());
+            autor.setStatus(textFieldAutorStatus.getText());
 
             buttonConfirmarClicked = true;
             dialogStage.close();
@@ -84,14 +93,14 @@ public class FXMLAnchorPaneCadastrosUsuarioDialogController implements Initializ
     private boolean validarEntradaDeDados() {
         String errorMessage = "";
 
-        if (textFieldUsuarioNome.getText() == null || textFieldUsuarioNome.getText().length() == 0) {
-            errorMessage += "Nome inválido!\n";
+        if (textFieldAutorNome.getText() == null || textFieldAutorNome.getText().length() == 0) {
+            errorMessage += "Nome invï¿½lido!\n";
         }
-        if (textFieldUsuarioEndereco.getText() == null || textFieldUsuarioEndereco.getText().length() == 0) {
-            errorMessage += "Endereço inválido!\n";
+        if (textFieldAutorTelefone.getText() == null || textFieldAutorTelefone.getText().length() == 0) {
+            errorMessage += "Telefone invï¿½lido!\n";
         }
-        if (textFieldUsuarioTelefone.getText() == null || textFieldUsuarioTelefone.getText().length() == 0) {
-            errorMessage += "Telefone inválido!\n";
+        if (textFieldAutorStatus.getText() == null || textFieldAutorStatus.getText().length() == 0) {
+            errorMessage += "Status invï¿½lido!\n";
         }
 
         if (errorMessage.length() == 0) {
@@ -100,7 +109,7 @@ public class FXMLAnchorPaneCadastrosUsuarioDialogController implements Initializ
             // Mostrando a mensagem de erro
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro no cadastro");
-            alert.setHeaderText("Campos inválidos, por favor, corrija...");
+            alert.setHeaderText("Campos invï¿½lidos, por favor, corrija...");
             alert.setContentText(errorMessage);
             alert.show();
             return false;

@@ -15,8 +15,7 @@
                   <MenuItem fx:id="menuItemCadastrosClientes" mnemonicParsing="false" onAction="#handleMenuItemCadastrosClientes" text="Clientes" />
                   <MenuItem fx:id="menuItemCadastrosUsuarios" mnemonicParsing="false" onAction="#handleMenuItemCadastrosUsuarios" text="Usuarios" /> 
                   <MenuItem fx:id="menuItemCadastrosEditoras" mnemonicParsing="false" onAction="#handleMenuItemCadastrosEditoras" text="Editoras" /> 
-              	  <MenuItem mnemonicParsing="false" text="Editora" />
-                  <MenuItem mnemonicParsing="false" text="Autor" />
+                  <MenuItem fx:id="menuItemCadastrosAutores"  mnemonicParsing="false" onAction="#handleMenuItemCadastrosAutores" text="Autor" />
                   <MenuItem mnemonicParsing="false" text="Palavra Chave" />
                   <MenuItem mnemonicParsing="false" text="Livro" />
                   <MenuItem mnemonicParsing="false" text="Exemplar" />

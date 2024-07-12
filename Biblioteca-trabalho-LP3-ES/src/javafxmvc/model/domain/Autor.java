@@ -7,17 +7,17 @@ public class Autor implements Serializable {
 	private int idAutor;
 	private String nome;
 	private String telefone;
-	private String satatus;
+	private String status;
 
 	public Autor() {
 	}
 
-	public Autor(int idAutor, String nome, String telefone, String satatus) {
+	public Autor(int idAutor, String nome, String telefone, String status) {
 		super();
 		this.idAutor = idAutor;
 		this.nome = nome;
 		this.telefone = telefone;
-		this.satatus = satatus;
+		this.status = status;
 	}
 
 	public int getIdAutor() {
@@ -44,12 +44,12 @@ public class Autor implements Serializable {
 		this.telefone = telefone;
 	}
 
-	public String getSatatus() {
-		return satatus;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setSatatus(String satatus) {
-		this.satatus = satatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
