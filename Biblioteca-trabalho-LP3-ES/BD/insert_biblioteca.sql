@@ -2,14 +2,14 @@
 --             Inserts no Schema Biblioteca
 -- -----------------------------------------------------
 
-INSERT INTO usuarios(nome, endereco, tel, status, tipo) 
-	VALUES('Baliu Fulano de Tal', 'Rua do Arroz, 20 - Mercado de São Sebastião', '(11) 11111-1111', 'H', 'P');
-INSERT INTO usuarios(nome, endereco, tel, status, tipo) 
-	VALUES('Pedro Fulano de Tal', 'Rua do Rio Morto, 256 - Petrópolis', '(22) 22222-2222', 'H', 'F');
-INSERT INTO usuarios(nome, endereco, tel, status, tipo) 
-	VALUES('CAUÃ Fulano de Tal', 'Travessa 15 de Novembro, S/N', '(33) 33333-3333', 'H', 'A');
-INSERT INTO usuarios(nome, endereco, tel, status, tipo) 
-	VALUES('Iago Fulano de Tal', 'AV. Brasil, 20867 - Nova Iguaçu', '(22) 44444-4444', 'D', 'A');
+INSERT INTO usuarios(nome, endereco, tel, usuario, senha, status, tipo) 
+	VALUES('Baliu Fulano de Tal', 'Rua do Arroz, 20 - Mercado de São Sebastião', '(11) 11111-1111', 'baliu1', '1234', 'H', 'P');
+INSERT INTO usuarios(nome, endereco, tel, usuario, senha, status, tipo) 
+	VALUES('Pedro Fulano de Tal', 'Rua do Rio Morto, 256 - Petrópolis', '(22) 22222-2222', 'baliu2', '1234','H', 'F');
+INSERT INTO usuarios(nome, endereco, tel, usuario, senha, status, tipo) 
+	VALUES('CAUÃ Fulano de Tal', 'Travessa 15 de Novembro, S/N', '(33) 33333-3333', 'baliu3', '1234','H', 'A');
+INSERT INTO usuarios(nome, endereco, tel, usuario, senha, status, tipo) 
+	VALUES('Iago Fulano de Tal', 'AV. Brasil, 20867 - Nova Iguaçu', '(22) 44444-4444', 'baliu4', '1234','D', 'A');
 -- SELECT * FROM usuarios
 -- ALTER TABLE usuarios CHANGE id_usuario idUsuario VARCHAR(255);
 -- ALTER TABLE usuarios CHANGE tel telefone VARCHAR(20);

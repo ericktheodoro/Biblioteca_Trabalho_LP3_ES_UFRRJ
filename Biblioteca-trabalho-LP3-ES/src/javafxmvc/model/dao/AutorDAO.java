@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javafxmvc.model.domain.Autor;
 
 public class AutorDAO {
-
+	
     private Connection connection;
 
     public Connection getConnection() {
@@ -21,6 +21,10 @@ public class AutorDAO {
 
     public void setConnection(Connection connection) {
         this.connection = connection;
+    }
+    
+    public AutorDAO(Connection connection) {
+    	this.connection = connection;
     }
 
     public boolean inserir(Autor autor) {

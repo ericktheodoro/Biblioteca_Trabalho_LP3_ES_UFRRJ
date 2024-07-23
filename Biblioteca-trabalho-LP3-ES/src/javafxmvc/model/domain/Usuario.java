@@ -2,36 +2,44 @@ package javafxmvc.model.domain;
 
 import java.io.Serializable;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class Usuario implements Serializable {
 
-	private int idUsuario;
     private String nome;
     private String endereco;
     private String tel;
     private String status;
 	private String tipo;
+	private String senha;
+	private String usuario;
+	
+	private final IntegerProperty idUsuario;
   
     public Usuario(){
+    	this.idUsuario = new SimpleIntegerProperty();
     }
 
-    public Usuario(int idUsuario, String nome, String endereco, String tel, String status, String tipo) {
-		super();
-		this.idUsuario = idUsuario;
-		this.nome = nome;
-		this.endereco = endereco;
-		this.tel = tel;
-		this.status = status;
-		this.tipo = tipo;
+    public String getUsuario() {
+		return usuario;
 	}
 
-
-    public int getIdUsuario() {
-		return idUsuario;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
-	}
+    public int getId_Usuario() {
+        return idUsuario.get();
+    }
+
+    public void setId_Usuario(int id_Usuario) {
+        this.idUsuario.set(id_Usuario);
+    }
+
+    public IntegerProperty id_UsuarioProperty() {
+        return idUsuario;
+    }
 
     public String getNome() {
         return nome;
@@ -71,6 +79,35 @@ public class Usuario implements Serializable {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	
+	public String getStatusDescricao() {
+        return "H".equals(status) ? "Habilitado" : "Desabilitado";
+    }
+
+    public String getTipoDescricao() {
+    	
+    	if (tipo == null) {
+            return "Tipo não definido"; // Ou outro valor padrão apropriado
+        }
+        switch (tipo) {
+            case "1":
+                return "Aluno";
+            case "2":
+                return "Professor";
+            case "3":
+                return "Funcionário";
+            default:
+                return "Aluno";
+        }
+    }
+    
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
     @Override

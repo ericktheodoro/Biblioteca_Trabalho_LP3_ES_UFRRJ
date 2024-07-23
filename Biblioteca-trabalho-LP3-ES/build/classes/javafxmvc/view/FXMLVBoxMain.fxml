@@ -3,43 +3,45 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxmvc.controller.FXMLVBoxMainController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxmvc.controller.FXMLVBoxMainController">
    <children>
-      <MenuBar>
+      <MenuBar prefHeight="31.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="Cadastros">
             <items>
-                  <MenuItem fx:id="menuItemCadastrosClientes" mnemonicParsing="false" onAction="#handleMenuItemCadastrosClientes" text="Clientes" />
                   <MenuItem fx:id="menuItemCadastrosUsuarios" mnemonicParsing="false" onAction="#handleMenuItemCadastrosUsuarios" text="Usuarios" /> 
                   <MenuItem fx:id="menuItemCadastrosEditoras" mnemonicParsing="false" onAction="#handleMenuItemCadastrosEditoras" text="Editoras" /> 
-                  <MenuItem fx:id="menuItemCadastrosAutores"  mnemonicParsing="false" onAction="#handleMenuItemCadastrosAutores" text="Autor" />
-                  <MenuItem mnemonicParsing="false" text="Palavra Chave" />
-                  <MenuItem mnemonicParsing="false" text="Livro" />
-                  <MenuItem mnemonicParsing="false" text="Exemplar" />
-                  <MenuItem mnemonicParsing="false" text="Autor - Livro" />
-                  <MenuItem mnemonicParsing="false" text="Palavra Chave - LIvro" />
+                  <MenuItem fx:id="menuItemCadastrosAutores" mnemonicParsing="false" onAction="#handleMenuItemCadastrosAutores" text="Autores" />
+                  <MenuItem fx:id="menuItemCadastrosExemplares" mnemonicParsing="false" onAction="#handleMenuItemCadastrosExemplares" text="Exemplares" />
+                  <MenuItem fx:id="menuItemCadastrosPalavrasChave" mnemonicParsing="false" onAction="#handleMenuItemCadastrosPalavrasChave" text="Palavras Chave" />
+                  <MenuItem fx:id="menuItemCadastrosLivros" mnemonicParsing="false" onAction="#handleMenuItemCadastrosLivros" text="Livros" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Processos">
             <items>
-              <MenuItem fx:id="menuItemProcessosVendas" mnemonicParsing="false" onAction="#handleMenuItemProcessosVendas" text="Vendas" />
+              <MenuItem fx:id="menuItemProcessosEmprestimos" mnemonicParsing="false" onAction="#handleMenuItemProcessosEmprestimos" text="Empréstimo" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Gráficos">
                <items>
-                  <MenuItem fx:id="menuItemGraficosVendasPorMes" mnemonicParsing="false" onAction="#handleMenuItemGraficosVendasPorMes" text="Vendas por Mês" />
+                  <MenuItem fx:id="menuItemGraficosVendasPorMes" mnemonicParsing="false" onAction="#handleMenuItemGraficosVendasPorMes" text="Emprestimos por mês" />
                </items>
             </Menu>
-          <Menu mnemonicParsing="false" text="Relatórios">
-            <items>
-              <MenuItem fx:id="menuItemRelatoriosQuantidadeProdutos" mnemonicParsing="false" onAction="#handleMenuItemRelatoriosQuantidadeProdutos" text="Quantidade de Produtos em Estoque" />
-            </items>
-          </Menu>
         </menus>
       </MenuBar>
       <AnchorPane fx:id="anchorPane" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sistema de Biblioteca" underline="true">
+         <font>
+            <Font size="49.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+      <ImageView fx:id="imagembiblioteca" fitHeight="192.0" fitWidth="263.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </VBox>

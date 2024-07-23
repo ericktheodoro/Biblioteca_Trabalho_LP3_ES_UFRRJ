@@ -5,6 +5,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,9 +22,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafxmvc.model.dao.UsuarioDAO;
-import javafxmvc.model.domain.Usuario;
 import javafxmvc.model.database.Database;
 import javafxmvc.model.database.DatabaseFactory;
+import javafxmvc.model.domain.Usuario;
 
 public class FXMLAnchorPaneCadastrosUsuariosController implements Initializable {
 
@@ -39,65 +41,78 @@ public class FXMLAnchorPaneCadastrosUsuariosController implements Initializable 
     @FXML
     private Button buttonRemover;
     @FXML
-    private Label labelUsuarioCodigo;   
+    private Button buttonDesabilitar;
+    @FXML
+    private Label labelUsuarioCodigo;
     @FXML
     private Label labelUsuarioNome;
     @FXML
-    private Label labelUsuarioEndereco;    
+    private Label labelUsuarioEndereco;
     @FXML
     private Label labelUsuarioTelefone;
+    @FXML
+    private Label labelUsuarioUsuario;
+    @FXML
+    private Label labelUsuarioSenha;
     @FXML
     private Label labelUsuarioStatus;
     @FXML
     private Label labelUsuarioTipo;
 
-
     private List<Usuario> listUsuarios;
     private ObservableList<Usuario> observableListUsuarios;
 
-    //Atributos para manipulação de Banco de Dados
+    // Atributos para manipulação de Banco de Dados
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.conectar();
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        usuarioDAO.setConnection (connection);
-        
+        usuarioDAO.setConnection(connection);
+
         carregarTableViewUsuarios();
 
-        // Limpando a exibi��o dos detalhes do usu�rio
+        // Limpando a exibição dos detalhes do usuário
         selecionarItemTableViewUsuarios(null);
 
         // Listen acionado diante de quaisquer alterações na seleção de itens do TableView
         tableViewUsuarios.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selecionarItemTableViewUsuarios(newValue));
-        
+
     }
 
     public void carregarTableViewUsuarios() {
         tableColumnUsuarioNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        tableColumnUsuarioStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        tableColumnUsuarioStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatusDescricao()));
+        TableColumn<Usuario, String> tableColumnUsuarioTipo = new TableColumn<>("Tipo");
+        tableColumnUsuarioTipo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTipoDescricao()));
 
         listUsuarios = usuarioDAO.listar();
 
         observableListUsuarios = FXCollections.observableArrayList(listUsuarios);
         tableViewUsuarios.setItems(observableListUsuarios);
+
+        tableViewUsuarios.getColumns().add(tableColumnUsuarioTipo);
     }
 
     public void selecionarItemTableViewUsuarios(Usuario usuario) {
         if (usuario != null) {
-            labelUsuarioCodigo.setText(String.valueOf(usuario.getIdUsuario()));
+            labelUsuarioCodigo.setText(String.valueOf(usuario.getId_Usuario()));
             labelUsuarioNome.setText(usuario.getNome());
             labelUsuarioEndereco.setText(usuario.getEndereco());
             labelUsuarioTelefone.setText(usuario.getTel());
-            labelUsuarioStatus.setText(usuario.getStatus());
-            labelUsuarioTipo.setText(usuario.getTipo());
+            labelUsuarioUsuario.setText(usuario.getUsuario());
+            labelUsuarioSenha.setText(usuario.getSenha());
+            labelUsuarioStatus.setText(usuario.getStatusDescricao());
+            labelUsuarioTipo.setText(usuario.getTipoDescricao());
         } else {
             labelUsuarioCodigo.setText("");
             labelUsuarioNome.setText("");
             labelUsuarioEndereco.setText("");
             labelUsuarioTelefone.setText("");
+            labelUsuarioUsuario.setText("");
+            labelUsuarioSenha.setText("");
             labelUsuarioStatus.setText("");
             labelUsuarioTipo.setText("");
         }
@@ -108,36 +123,49 @@ public class FXMLAnchorPaneCadastrosUsuariosController implements Initializable 
         Usuario usuario = new Usuario();
         boolean buttonConfirmarClicked = showFXMLAnchorPaneCadastrosUsuariosDialog(usuario);
         if (buttonConfirmarClicked) {
-           usuarioDAO.inserir(usuario);
+            usuarioDAO.inserir(usuario);
             carregarTableViewUsuarios();
         }
     }
 
     @FXML
     public void handleButtonAlterar() throws IOException {
-        Usuario usuario = tableViewUsuarios.getSelectionModel().getSelectedItem();//Obtendo usuario selecionado
+        Usuario usuario = tableViewUsuarios.getSelectionModel().getSelectedItem();
         if (usuario != null) {
             boolean buttonConfirmarClicked = showFXMLAnchorPaneCadastrosUsuariosDialog(usuario);
             if (buttonConfirmarClicked) {
-            	usuarioDAO.alterar(usuario);
+                usuarioDAO.alterar(usuario);
                 carregarTableViewUsuarios();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Por favor, escolha um usu�rio na Tabela!");
+            alert.setContentText("Por favor, escolha um usuário na tabela.");
             alert.show();
         }
     }
 
     @FXML
-    public void handleButtonRemover() throws IOException {
+    public void handleButtonRemover() {
         Usuario usuario = tableViewUsuarios.getSelectionModel().getSelectedItem();
         if (usuario != null) {
-        	usuarioDAO.remover(usuario);
+            usuarioDAO.remover(usuario);
             carregarTableViewUsuarios();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Por favor, escolha um usu�rio na Tabela!");
+            alert.setContentText("Por favor, escolha um usuário na tabela.");
+            alert.show();
+        }
+    }
+    
+    @FXML
+    public void handleButtonDesabilitar() {
+        Usuario usuario = tableViewUsuarios.getSelectionModel().getSelectedItem();
+        if (usuario != null) {
+            usuarioDAO.desabilitar(usuario);
+            carregarTableViewUsuarios();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Por favor, escolha um usuário na tabela.");
             alert.show();
         }
     }
@@ -145,32 +173,20 @@ public class FXMLAnchorPaneCadastrosUsuariosController implements Initializable 
     public boolean showFXMLAnchorPaneCadastrosUsuariosDialog(Usuario usuario) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(FXMLAnchorPaneCadastrosUsuariosDialogController.class.getResource("/javafxmvc/view/FXMLAnchorPaneCadastrosUsuariosDialog.fxml"));
-        AnchorPane page = (AnchorPane) loader.load();
+        AnchorPane page = loader.load();
 
-        // Criando um Estágio de Diálogo (Stage Dialog)
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Cadastro de usu�rios");
-        //Especifica a modalidade para esta fase . Isso deve ser feito antes de fazer o estágio visível. 
-        // A modalidade pode ser: Modality.NONE , Modality.WINDOW_MODAL , ou Modality.APPLICATION_MODAL 
-        //dialogStage.initModality(Modality.WINDOW_MODAL);//WINDOW_MODAL (possibilita minimizar)
-        
-        //Especifica a janela do proprietário para esta página, ou null para um nível superior.
-        //dialogStage.initOwner(null); //null deixa a Tela Principal livre para ser movida
-        //dialogStage.initOwner(this.tableViewUsuarios.getScene().getWindow()); //deixa a tela de Preenchimento dos dados como prioritária
-        
+        dialogStage.setTitle("Cadastro de Usuários");
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
-        // Setando o usu�rio no Controller.
         FXMLAnchorPaneCadastrosUsuariosDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
         controller.setUsuario(usuario);
 
-        // Mostra o Dialog e espera até que o usuário o feche
+        // Mostra o diálogo e espera até que o usuário o feche
         dialogStage.showAndWait();
 
         return controller.isButtonConfirmarClicked();
-
     }
-
 }

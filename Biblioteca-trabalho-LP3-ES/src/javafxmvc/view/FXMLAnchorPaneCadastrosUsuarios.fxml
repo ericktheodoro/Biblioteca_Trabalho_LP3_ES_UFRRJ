@@ -48,6 +48,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints />
                     </rowConstraints>
                      <children>
                         <Label text="Código" />
@@ -56,12 +58,16 @@
                         <Label text="Telefone" GridPane.rowIndex="3" />
                         <Label text="Status" GridPane.rowIndex="4" />
                         <Label text="Tipo" GridPane.rowIndex="5" />
+                        <Label text="Usuário" GridPane.rowIndex="6" />
+                        <Label text="Senha" GridPane.rowIndex="7" />
                         <Label fx:id="labelUsuarioCodigo" GridPane.columnIndex="1" />
                         <Label fx:id="labelUsuarioNome" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="labelUsuarioEndereco" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="labelUsuarioTelefone" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label fx:id="labelUsuarioStatus" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label fx:id="labelUsuarioTipo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="labelUsuarioUsuario" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label fx:id="labelUsuarioSenha" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                      </children>
                   </GridPane>
                   <Group layoutX="6.0" layoutY="-25.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
@@ -69,6 +75,7 @@
                         <Button fx:id="buttonAlterar" layoutX="205.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleButtonAlterar" prefHeight="25.0" prefWidth="65.0" text="Alterar" />
                         <Button fx:id="buttonInserir" layoutX="132.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleButtonInserir" prefHeight="25.0" prefWidth="65.0" text="Inserir" />
                         <Button fx:id="buttonRemover" layoutX="276.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleButtonRemover" prefHeight="25.0" prefWidth="65.0" text="Remover" />
+                        <Button fx:id="buttonDesabilitar" layoutX="349.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleButtonDesabilitar" prefHeight="25.0" prefWidth="73.0" text="Desabilitar" />
                      </children>
                   </Group>
                </children>

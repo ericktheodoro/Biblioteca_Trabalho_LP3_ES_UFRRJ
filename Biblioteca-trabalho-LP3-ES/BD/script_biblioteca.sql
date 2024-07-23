@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS biblioteca.usuarios (
     nome 		VARCHAR(50),
     endereco 	VARCHAR(100),
     tel 		VARCHAR(20),
+    usuario     VARCHAR(50),
+    senha       VARCHAR(50),
     status 		VARCHAR(1),         -- Pode ser: H-abilitado ou D-esabilitado
     tipo        varchar(1), 		-- Pode ser: P-rofessor ou A-luno ou F-uncionário
     PRIMARY KEY (id_usuario)
@@ -157,61 +159,5 @@ CREATE TABLE IF NOT EXISTS biblioteca.emprestimos_exemplares (
 
 );
 -- ENGINE = InnoDB;
--- -----------------------------------------------------
---                  SISTEMA DE VENDAS
--- -----------------------------------------------------
 
-CREATE TABLE categorias(
-   cdCategoria int     NOT NULL AUTO_INCREMENT,
-   descricao  varchar(50) NOT NULL,
-   CONSTRAINT pk_categorias
-      PRIMARY KEY(cdCategoria)
-);
-
-CREATE TABLE produtos(
-   cdProduto int      NOT NULL AUTO_INCREMENT,
-   nome varchar(50) NOT NULL,
-   preco float     NOT NULL,
-   quantidade int     NOT NULL,
-   cdCategoria int     NOT NULL,
-   CONSTRAINT pk_produtos
-      PRIMARY KEY(cdProduto),
-   CONSTRAINT fk_produtos_categorias
-      FOREIGN KEY(cdCategoria)
-      REFERENCES categorias(cdCategoria)
-);
-
-CREATE TABLE clientes(
-   cdCliente int      NOT NULL AUTO_INCREMENT,
-   nome varchar(50) NOT NULL,
-   cpf varchar(50) NOT NULL,
-   telefone varchar(50) NOT NULL,
-   CONSTRAINT pk_clientes
-      PRIMARY KEY(cdCliente)
-);
-
-CREATE TABLE vendas(
-   cdVenda int NOT NULL AUTO_INCREMENT,
-   data date NOT NULL,
-   valor float NOT NULL,
-   pago boolean NOT NULL,
-   cdCliente int,
-   CONSTRAINT pk_vendas
-      PRIMARY KEY(cdVenda),
-   CONSTRAINT fk_vendas_clientes
-      FOREIGN KEY(cdCliente)
-      REFERENCES clientes(cdCliente)
-);
-
-CREATE TABLE itensdevenda(
-   cdItemDeVenda int NOT NULL AUTO_INCREMENT,
-   quantidade int NOT NULL,
-   valor float NOT NULL,
-   cdProduto int,
-   cdVenda int,
-								 -- PRIMARY KEY (cdVenda, cdProduto)
-   CONSTRAINT pk_itensdevenda       PRIMARY KEY(cdItemDeVenda),
-   CONSTRAINT fk_itensdevenda_produtos FOREIGN KEY(cdProduto) REFERENCES produtos(cdProduto),
-   CONSTRAINT fk_itensdevenda_vendas   FOREIGN KEY(cdVenda)   REFERENCES vendas(cdVenda)
-);
 

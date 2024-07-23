@@ -58,11 +58,10 @@ public class FXMLAnchorPaneCadastrosAutoresController implements Initializable {
     //Atributos para manipulação de Banco de Dados
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.conectar();
-    private final AutorDAO autorDAO = new AutorDAO();
+    private final AutorDAO autorDAO = new AutorDAO(connection);
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        autorDAO.setConnection (connection);
         
         carregarTableViewAutores();
 

@@ -17,7 +17,7 @@ public class DatabaseMySQL implements Database {
     @Override
     public Connection conectar() {
         try {
-        	Class.forName("com.mysql.jdbc.Driver");
+        	Class.forName("com.mysql.cj.jdbc.Driver");
         	//Class.forName("com.mysql.cj.jdbc.Driver");
         	this.connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/biblioteca", "root","123456");
             return this.connection;

@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafxmvc.model.dao.EditoraDAO;
+import javafxmvc.model.dao.ExemplarDAO;
 import javafxmvc.model.domain.Editora;
 import javafxmvc.model.database.Database;
 import javafxmvc.model.database.DatabaseFactory;
@@ -73,6 +74,13 @@ public class FXMLAnchorPaneCadastrosEditorasController implements Initializable{
         tableViewEditoras.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selecionarItemTableViewEditoras(newValue));
         
+        EditoraDAO editoraDAO = new EditoraDAO();
+        editoraDAO.setConnection(connection); // Configura a conexão no DAO
+
+        ExemplarDAO exemplarDAO = new ExemplarDAO();
+        exemplarDAO.setConnection(connection); // Configura a conexão no DAO
+    
+        
     }
 
     public void carregarTableViewEditoras() {
@@ -92,7 +100,7 @@ public class FXMLAnchorPaneCadastrosEditorasController implements Initializable{
             labelEditoraEndereco.setText(editora.getEndereco());
             labelEditoraTelefone.setText(editora.getTelefone());
             labelEditoraContato.setText(editora.getContato());
-            labelEditoraStatus.setText(editora.getStatus());
+            labelEditoraStatus.setText(editora.getStatusDescricao());
         } else {
             labelEditoraCodigo.setText("");
             labelEditoraNome.setText("");
@@ -150,13 +158,6 @@ public class FXMLAnchorPaneCadastrosEditorasController implements Initializable{
         // Criando um Estágio de Diálogo (Stage Dialog)
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Cadastro de usu�rios");
-        //Especifica a modalidade para esta fase . Isso deve ser feito antes de fazer o estágio visível. 
-        // A modalidade pode ser: Modality.NONE , Modality.WINDOW_MODAL , ou Modality.APPLICATION_MODAL 
-        //dialogStage.initModality(Modality.WINDOW_MODAL);//WINDOW_MODAL (possibilita minimizar)
-        
-        //Especifica a janela do proprietário para esta página, ou null para um nível superior.
-        //dialogStage.initOwner(null); //null deixa a Tela Principal livre para ser movida
-        //dialogStage.initOwner(this.tableViewEditoras.getScene().getWindow()); //deixa a tela de Preenchimento dos dados como prioritária
         
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);

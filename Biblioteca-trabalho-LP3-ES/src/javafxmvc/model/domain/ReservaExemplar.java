@@ -4,31 +4,28 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class ReservaExemplar implements Serializable{
-	private LocalDate dataDevolucao;
-	private Exemplar exemplar;
+	
+	private LocalDate dtCancelamento;
 	private Reserva reserva;
-
-	public ReservaExemplar(LocalDate dataDevolucao, Exemplar exemplar, Reserva reserva) {
+	private Exemplar exemplar;
+	
+	public ReservaExemplar() {
 		super();
-		this.dataDevolucao = dataDevolucao;
-		this.exemplar = exemplar;
+	}
+
+	public ReservaExemplar(LocalDate dtCancelamento, Reserva reserva, Exemplar exemplar) {
+		super();
+		this.dtCancelamento = dtCancelamento;
 		this.reserva = reserva;
-	}
-
-	public LocalDate getDataDevolucao() {
-		return dataDevolucao;
-	}
-
-	public void setDataDevolucao(LocalDate dataDevolucao) {
-		this.dataDevolucao = dataDevolucao;
-	}
-
-	public Exemplar getExemplar() {
-		return exemplar;
-	}
-
-	public void setExemplar(Exemplar exemplar) {
 		this.exemplar = exemplar;
+	}
+
+	public LocalDate getDtCancelamento() {
+		return dtCancelamento;
+	}
+
+	public void setDtCancelamento(LocalDate dtCancelamento) {
+		this.dtCancelamento = dtCancelamento;
 	}
 
 	public Reserva getReserva() {
@@ -39,11 +36,18 @@ public class ReservaExemplar implements Serializable{
 		this.reserva = reserva;
 	}
 
-	@Override
-	public String toString() {
-		return "ReservaExemplar [dataDevolucao=" + dataDevolucao + ", exemplar=" + exemplar + ", reserva=" + reserva
-				+ "]";
+	public Exemplar getExemplar() {
+		return exemplar;
 	}
 
+	public void setExemplar(Exemplar exemplar) {
+		this.exemplar = exemplar;
+	}
+
+	@Override
+	public String toString() {
+		return "ReservaExemplar [dtCancelamento=" + dtCancelamento + ", reserva=" + reserva + ", exemplar=" + exemplar
+				+ "]";
+	}
 
 }

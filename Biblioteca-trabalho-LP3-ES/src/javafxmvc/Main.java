@@ -7,21 +7,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    
     @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view/FXMLVBoxMain.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.setTitle("Sistema de Biblioteca - Trabalho de Engenharia de Software e Linguagem de Programação 3");
-        stage.setResizable(false);
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/javafxmvc/view/FXMLVBoxLoginUsuario.fxml"));
+        primaryStage.setTitle("Sistema de Biblioteca");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-    
 }

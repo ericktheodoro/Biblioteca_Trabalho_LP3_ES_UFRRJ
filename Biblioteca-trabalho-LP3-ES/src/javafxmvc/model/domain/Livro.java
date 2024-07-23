@@ -10,9 +10,12 @@ public class Livro implements Serializable {
 	private String nome;
 	private LocalDate dataPublicacao;
 	private String prefacio;
-	private List<LivroPalavraChave> livroPalavraChave;
-	private List<LivroAutor> livroAutor;
+	private List<PalavraChave> palavrasChave;
+	private List<Autor> Autores;
 
+	public Livro(String nome) {
+		this.nome = nome;
+	}
 	public Livro() {
 	}
 
@@ -24,23 +27,20 @@ public class Livro implements Serializable {
 		this.prefacio = prefacio;
 	}
 
-
-	public List<LivroAutor> getLivroAutor() {
-		return livroAutor;
+    public List<Autor> getAutores() {
+		return Autores;
+	}
+	public void setAutores(List<Autor> autores) {
+		this.Autores = autores;
 	}
 
-	public void setLivroAutor(List<LivroAutor> livroAutor) {
-		this.livroAutor = livroAutor;
-	}
+    public List<PalavraChave> getPalavrasChave() {
+        return palavrasChave;
+    }
 
-	public List<LivroPalavraChave> getLivroPalavraChave() {
-		return livroPalavraChave;
-	}
-
-	public void setLivroPalavraChave(List<LivroPalavraChave> livroPalavraChave) {
-		this.livroPalavraChave = livroPalavraChave;
-	}
-
+    public void setPalavrasChave(List<PalavraChave> palavrasChave) {
+        this.palavrasChave = palavrasChave;
+    }
 	public int getIdLivro() {
 		return idLivro;
 	}
@@ -75,6 +75,6 @@ public class Livro implements Serializable {
 
 	@Override
 	public String toString() {
-		return this.prefacio;
+		return this.nome;
 	}
 }

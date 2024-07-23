@@ -67,6 +67,9 @@ public class Editora implements Serializable {
 	public String getStatus() {
 		return status;
 	}
+	public String getStatusDescricao() {
+        return "H".equals(status) ? "Habilitado" : "Desabilitado";
+    }
 
 	public void setStatus(String status) {
 		this.status = status;
