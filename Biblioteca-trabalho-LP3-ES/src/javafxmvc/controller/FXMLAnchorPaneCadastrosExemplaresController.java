@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,8 +39,6 @@ public class FXMLAnchorPaneCadastrosExemplaresController implements Initializabl
     @FXML
     private TableColumn<Exemplar, String> tableColumnExemplarLivro;
     @FXML
-    private TableColumn<Exemplar, String> tableColumnExemplarStatus;
-    @FXML
     private TableColumn<Exemplar, String> tableColumnExemplarReservado;
     @FXML
     private Button buttonInserir;
@@ -61,42 +60,40 @@ public class FXMLAnchorPaneCadastrosExemplaresController implements Initializabl
     private TextField textFieldExemplarNomeEditora;
     @FXML
     private TextField textFieldExemplarStatus;
+    @FXML
+    private ComboBox<Editora> comboBoxEditoraNome;  // Assumindo que existe uma ComboBox para Editora
 
     private List<Exemplar> listExemplares;
     private ObservableList<Exemplar> observableListExemplares;
 
-    //Atributos para manipulação de Banco de Dados
+    // Atributos para manipulação de Banco de Dados
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.conectar();
     private final ExemplarDAO exemplarDAO = new ExemplarDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        exemplarDAO.setConnection (connection);
+        exemplarDAO.setConnection(connection);
         
         carregarTableViewExemplares();
 
-        // Limpando a exibi��o dos detalhes do exemplar
+        // Limpando a exibição dos detalhes do exemplar
         selecionarItemTableViewExemplares(null);
 
         // Listen acionado diante de quaisquer alterações na seleção de itens do TableView
         tableViewExemplares.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selecionarItemTableViewExemplares(newValue));
-        
-
 
         EditoraDAO editoraDAO = new EditoraDAO();
         editoraDAO.setConnection(connection); // Configura a conexão no DAO
-
-        ExemplarDAO exemplarDAO = new ExemplarDAO();
-        exemplarDAO.setConnection(connection); // Configura a conexão no DAO
-    
     }
     
-  /*  @FXML
+    @FXML
     private void handleButtonInserir(ActionEvent event) {
         try {
-            
+            // Assumindo que o livro está sendo obtido de alguma forma, ajuste conforme necessário
+            Livro livro = new Livro(); // Obtenha o livro de acordo com sua lógica
+
             Editora editora = comboBoxEditoraNome.getSelectionModel().getSelectedItem();
 
             if (livro == null) {
@@ -125,15 +122,13 @@ public class FXMLAnchorPaneCadastrosExemplaresController implements Initializabl
             alert.showAndWait();
         }
     }
-    
-    */
 
     public void carregarTableViewExemplares() {
-    	tableColumnExemplarLivro.setCellValueFactory(cellData -> {
-    	    Exemplar exemplar = cellData.getValue();
-    	    return new SimpleStringProperty(exemplar.getLivro().getNome());
-    	});
-        tableColumnExemplarStatus.setCellValueFactory(new PropertyValueFactory<>("reservado"));
+        tableColumnExemplarLivro.setCellValueFactory(cellData -> {
+            Exemplar exemplar = cellData.getValue();
+            return new SimpleStringProperty(exemplar.getLivro().getNome());
+        });
+        tableColumnExemplarReservado.setCellValueFactory(new PropertyValueFactory<>("reservado"));
 
         listExemplares = exemplarDAO.listar();
 
@@ -169,14 +164,13 @@ public class FXMLAnchorPaneCadastrosExemplaresController implements Initializabl
         }
     }
 
-
     @FXML
     public void handleButtonAlterar() throws IOException {
-        Exemplar exemplar = tableViewExemplares.getSelectionModel().getSelectedItem();//Obtendo exemplar selecionado
+        Exemplar exemplar = tableViewExemplares.getSelectionModel().getSelectedItem(); // Obtendo exemplar selecionado
         if (exemplar != null) {
             boolean buttonConfirmarClicked = showFXMLAnchorPaneCadastrosExemplaresDialog(exemplar);
             if (buttonConfirmarClicked) {
-            	exemplarDAO.alterar(exemplar);
+                exemplarDAO.alterar(exemplar);
                 carregarTableViewExemplares();
             }
         } else {
@@ -190,7 +184,7 @@ public class FXMLAnchorPaneCadastrosExemplaresController implements Initializabl
     public void handleButtonRemover() throws IOException {
         Exemplar exemplar = tableViewExemplares.getSelectionModel().getSelectedItem();
         if (exemplar != null) {
-        	exemplarDAO.remover(exemplar);
+            exemplarDAO.remover(exemplar);
             carregarTableViewExemplares();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -202,18 +196,18 @@ public class FXMLAnchorPaneCadastrosExemplaresController implements Initializabl
     public boolean showFXMLAnchorPaneCadastrosExemplaresDialog(Exemplar exemplar) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(FXMLAnchorPaneCadastrosExemplaresDialogController.class.getResource("/javafxmvc/view/FXMLAnchorPaneCadastrosExemplaresDialog.fxml"));
-        AnchorPane page = (AnchorPane) loader.load();
+        AnchorPane page = loader.load();
 
         // Criando um Estágio de Diálogo (Stage Dialog)
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Cadastro de exemplars");
-        //Especifica a modalidade para esta fase . Isso deve ser feito antes de fazer o estágio visível. 
+        dialogStage.setTitle("Cadastro de exemplares");
+        // Especifica a modalidade para esta fase . Isso deve ser feito antes de fazer o estágio visível. 
         // A modalidade pode ser: Modality.NONE , Modality.WINDOW_MODAL , ou Modality.APPLICATION_MODAL 
-        //dialogStage.initModality(Modality.WINDOW_MODAL);//WINDOW_MODAL (possibilita minimizar)
+        // dialogStage.initModality(Modality.WINDOW_MODAL);//WINDOW_MODAL (possibilita minimizar)
         
-        //Especifica a janela do proprietário para esta página, ou null para um nível superior.
-        //dialogStage.initOwner(null); //null deixa a Tela Principal livre para ser movida
-        //dialogStage.initOwner(this.tableViewExemplares.getScene().getWindow()); //deixa a tela de Preenchimento dos dados como prioritária
+        // Especifica a janela do proprietário para esta página, ou null para um nível superior.
+        // dialogStage.initOwner(null); // null deixa a Tela Principal livre para ser movida
+        // dialogStage.initOwner(this.tableViewExemplares.getScene().getWindow()); //deixa a tela de Preenchimento dos dados como prioritária
         
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
@@ -227,7 +221,5 @@ public class FXMLAnchorPaneCadastrosExemplaresController implements Initializabl
         dialogStage.showAndWait();
 
         return controller.isButtonConfirmarClicked();
-
     }
-
 }
