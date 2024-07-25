@@ -1,7 +1,6 @@
 package javafxmvc.controller;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -48,9 +47,17 @@ public class FXMLAnchorPaneProcessosEmprestimosDialogController implements Initi
     }
 
     public void carregarComboBoxUsuarios() {
-        listUsuarios = usuarioDAO.listar();
-        observableListUsuarios = FXCollections.observableArrayList(listUsuarios);
-        comboBoxEmprestimoUsuario.setItems(observableListUsuarios);
+        try {
+            listUsuarios = usuarioDAO.listar();
+            observableListUsuarios = FXCollections.observableArrayList(listUsuarios);
+            comboBoxEmprestimoUsuario.setItems(observableListUsuarios);
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao carregar usuários");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     public Stage getDialogStage() {
@@ -67,8 +74,12 @@ public class FXMLAnchorPaneProcessosEmprestimosDialogController implements Initi
 
     public void setEmprestimo(Emprestimo emprestimo) {
         this.emprestimo = emprestimo;
-        this.datePickerEmprestimoData.setValue(emprestimo.getDataEmprestimo());
-        this.comboBoxEmprestimoUsuario.setValue(emprestimo.getUsuario());
+        if (emprestimo.getDataEmprestimo() != null) {
+            this.datePickerEmprestimoData.setValue(emprestimo.getDataEmprestimo());
+        }
+        if (emprestimo.getUsuario() != null) {
+            this.comboBoxEmprestimoUsuario.setValue(emprestimo.getUsuario());
+        }
     }
 
     public boolean isButtonConfirmarClicked() {
@@ -92,13 +103,13 @@ public class FXMLAnchorPaneProcessosEmprestimosDialogController implements Initi
     }
 
     private boolean validarEntradaDeDados() {
-        String errorMessage = "";
+        StringBuilder errorMessage = new StringBuilder();
 
         if (datePickerEmprestimoData.getValue() == null) {
-            errorMessage += "Data inválida!\n";
+            errorMessage.append("Data inválida!\n");
         }
         if (comboBoxEmprestimoUsuario.getValue() == null) {
-            errorMessage += "Usuário inválido!\n";
+            errorMessage.append("Usuário inválido!\n");
         }
 
         if (errorMessage.length() == 0) {
@@ -107,9 +118,19 @@ public class FXMLAnchorPaneProcessosEmprestimosDialogController implements Initi
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro no cadastro");
             alert.setHeaderText("Campos inválidos, por favor corrija...");
-            alert.setContentText(errorMessage);
+            alert.setContentText(errorMessage.toString());
             alert.show();
             return false;
         }
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            database.desconectar();
+        } finally {
+            super.finalize();
+        }
+    }
 }
+
