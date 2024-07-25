@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import javafxmvc.model.domain.Editora;
 import javafxmvc.model.domain.Exemplar;
 import javafxmvc.model.domain.Livro;
-import javafxmvc.model.dao.LivroDAO;
 
 public class ExemplarDAO {
 
@@ -32,29 +31,29 @@ public class ExemplarDAO {
     }
 
     public void inserir(Exemplar exemplar) throws SQLException {
-        if (exemplar.getLivro() == null) {
-            throw new IllegalArgumentException("Livro cannot be null when inserting Exemplar.");
+        checkConnection();
+        if (exemplar.getLivro() == null || exemplar.getEditora() == null) {
+            throw new IllegalArgumentException("Livro e Editora não podem ser nulos ao inserir Exemplar.");
         }
 
-        String sql = "INSERT INTO exemplares (id_livro, id_editora, reservado) VALUES (?, ?,'N')";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        try {
+        String sql = "INSERT INTO exemplares (id_livro, id_editora, reservado) VALUES (?, ?, 'N')";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, exemplar.getLivro().getIdLivro());
             stmt.setInt(2, exemplar.getEditora().getIdEditora());
-            stmt.execute(); 
+            stmt.execute();
         } catch (SQLException ex) {
-            Logger.getLogger(ExemplarDAO.class.getName()).log(Level.SEVERE, "Erro ao inserir exemplar", ex); 
+            Logger.getLogger(ExemplarDAO.class.getName()).log(Level.SEVERE, "Erro ao inserir exemplar", ex);
         }
     }
-    
 
     public boolean alterar(Exemplar exemplar) {
-        checkConnection(); // Verificar se a conexão foi inicializada
+        checkConnection();
         String sql = "UPDATE exemplares SET id_livro=?, id_editora=?, reservado=? WHERE id_exemplar=?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, exemplar.getLivro().getIdLivro());
             stmt.setInt(2, exemplar.getEditora().getIdEditora());
-            stmt.setInt(3, exemplar.getIdExemplar());
+            stmt.setString(3, exemplar.getReservado());
+            stmt.setInt(4, exemplar.getIdExemplar());
             stmt.execute();
             return true;
         } catch (SQLException ex) {
@@ -64,7 +63,7 @@ public class ExemplarDAO {
     }
 
     public boolean remover(Exemplar exemplar) {
-        checkConnection(); // Verificar se a conexão foi inicializada
+        checkConnection();
         String sql = "DELETE FROM exemplares WHERE id_exemplar=?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, exemplar.getIdExemplar());
@@ -77,7 +76,7 @@ public class ExemplarDAO {
     }
 
     public List<Exemplar> listar() {
-        checkConnection(); // Verificar se a conexão foi inicializada
+        checkConnection();
         String sql = "SELECT * FROM exemplares";
         List<Exemplar> retorno = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(sql);
@@ -87,13 +86,13 @@ public class ExemplarDAO {
                 Exemplar exemplar = new Exemplar();
                 exemplar.setIdExemplar(resultado.getInt("id_exemplar"));
 
-                LivroDAO livroDAO = new LivroDAO(connection);
-                livroDAO.setConnection(connection); // Passar a conexão
+                LivroDAO livroDAO = new LivroDAO();
+                livroDAO.setConnection(connection);
                 Livro livro = livroDAO.buscarLivro(resultado.getInt("id_livro"));
                 exemplar.setLivro(livro);
 
                 EditoraDAO editoraDAO = new EditoraDAO();
-                editoraDAO.setConnection(connection); // Passar a conexão
+                editoraDAO.setConnection(connection);
                 Editora editora = editoraDAO.buscarPorId(resultado.getInt("id_editora"));
                 exemplar.setEditora(editora);
 
@@ -107,7 +106,7 @@ public class ExemplarDAO {
     }
 
     public Exemplar buscar(Exemplar exemplar) {
-        checkConnection(); // Verificar se a conexão foi inicializada
+        checkConnection();
         String sql = "SELECT * FROM exemplares WHERE id_exemplar=?";
         Exemplar retorno = null;
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -117,13 +116,13 @@ public class ExemplarDAO {
                     retorno = new Exemplar();
                     retorno.setIdExemplar(resultado.getInt("id_exemplar"));
 
-                    LivroDAO livroDAO = new LivroDAO(connection);
-                    livroDAO.setConnection(connection); // Passar a conexão
+                    LivroDAO livroDAO = new LivroDAO();
+                    livroDAO.setConnection(connection);
                     Livro livro = livroDAO.buscarLivro(resultado.getInt("id_livro"));
                     retorno.setLivro(livro);
 
                     EditoraDAO editoraDAO = new EditoraDAO();
-                    editoraDAO.setConnection(connection); // Passar a conexão
+                    editoraDAO.setConnection(connection);
                     Editora editora = editoraDAO.buscarPorId(resultado.getInt("id_editora"));
                     retorno.setEditora(editora);
 
